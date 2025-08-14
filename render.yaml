@@ -7,12 +7,14 @@ services:
       url: docker.io/n8nio/n8n:latest
 
     envVars:
+      # Chave para criptografar credenciais do n8n
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
+      # Tipo de banco de dados
       - key: DB_TYPE
         value: postgresdb
 
+      # String de conexão única para o Supabase (Session Pooler)
       - key: DB_POSTGRESDB_CONNECTION_STRING
-        value: postgresql://postgres.akqjvytmeqfhuirfzppq:Q4rLq2cUf#S5gu#@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
-
+        value: postgresql://postgres:Q4rLq2cUf#S5gu#@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require&ssl=true

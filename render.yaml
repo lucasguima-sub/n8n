@@ -13,21 +13,5 @@ services:
       - key: DB_TYPE
         value: postgresdb
 
-      - key: DB_POSTGRESDB_DATABASE
-        value: postgres
-
-      - key: DB_POSTGRESDB_HOST
-        value: 2600:1f1e:75b:4b00:950d:e3ae:5fb6:33de
-
-      - key: DB_POSTGRESDB_PORT
-        value: "5432"
-
-      - key: DB_POSTGRESDB_USER
-        value: postgres
-
-      - key: DB_POSTGRESDB_PASSWORD
-        value: Q4rLq2cUf#S5gu#
-
-      # SSL é obrigatório para Supabase
-      - key: DB_POSTGRESDB_SSL
-        value: "true"
+      - key: DB_POSTGRESDB_CONNECTION_STRING
+        value: postgresql://postgres.akqjvytmeqfhuirfzppq:[Q4rLq2cUf#S5gu#]@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require

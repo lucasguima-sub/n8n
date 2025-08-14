@@ -14,4 +14,5 @@ services:
         value: postgresdb
 
       - key: DB_POSTGRESDB_CONNECTION_STRING
-        value: postgresql://postgres.akqjvytmeqfhuirfzppq:[Q4rLq2cUf#S5gu#]@aws-1-sa-east-1.pooler.supabase.com:5432/postgres
+        value: postgresql://postgres.akqjvytmeqfhuirfzppq:Q4rLq2cUf#S5gu#@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+

@@ -1,65 +1,49 @@
-# Use this Blueprint to deploy n8n on Render as a web
-# service that uses a Postgres database to store
-# workflow data.
-#
-# This Blueprint uses free instance types (specified by
-# `plan`) for both the web service and the database. You
-# can upgrade to paid instance types at any time to
-# increase resources.
+# Use este Blueprint para implantar o n8n no Render como um serviço web
+# que usa um banco de dados Postgres externo (Supabase) para armazenar
+# dados de workflow.
 
 services:
   - type: web
     plan: free
-    # This is the runtime for services that pull a prebuilt Docker image
+    # Este é o tempo de execução para serviços que puxam uma imagem Docker pré-construída
     runtime: image
-    # You can give the service any name
+    # Você pode dar qualquer nome ao serviço
     name: n8n-service
     image:
-      # Pulls the n8n image tagged as latest from Docker Hub
+      # Puxa a imagem do n8n com a tag 'latest' do Docker Hub
       url: docker.io/n8nio/n8n:latest
 
-    # All environment variables defined below are required!
+    # Todas as variáveis de ambiente abaixo são necessárias!
     #
-    # You can define additional environment variables as needed.
+    # Você pode definir variáveis de ambiente adicionais conforme necessário.
     envVars:
-      # Generates a base64-encoded key for
-      # encrypting credentials in n8n
+      # Gera uma chave codificada em base64 para
+      # criptografar credenciais no n8n.
       #
-      # Do not modify this value after it's generated!
-      # If you do, you'll lose access to all credentials
-      # encrypted with the previous value.
+      # Use `generateValue: true` no Render ou forneça sua própria chave
+      # forte (como uma string aleatória com mais de 32 caracteres).
+      # Se você usar `generateValue: true`, o Render irá gerar uma para você.
+      # Exemplo: - key: N8N_ENCRYPTION_KEY
+      #          value: sua-chave-de-criptografia-aqui
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # These automatically populate connection details 
-      # for the Render Postgres database defined below
+      # Variáveis de ambiente para conectar o n8n ao seu banco de dados PostgreSQL no Supabase.
+      # Substitua os valores entre aspas pelas suas credenciais reais do Supabase.
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
-        fromDatabase:
-          name: n8n-db
-          property: database
+        value: "postgres" # Geralmente é 'postgres'
       - key: DB_POSTGRESDB_HOST
-        fromDatabase:
-          name: n8n-db
-          property: host
+        value: "db.akqjvytmeqfhuirfzppq.supabase.co"
       - key: DB_POSTGRESDB_PASSWORD
-        fromDatabase:
-          name: n8n-db
-          property: password
+        value: "Q4rLq2cUf#S5gu#"
       - key: DB_POSTGRESDB_USER
-        fromDatabase:
-          name: n8n-db
-          property: user
+        value: "postgres" # Geralmente é 'postgres'
+      - key: DB_POSTGRESDB_PORT
+        value: "5432"
 
-databases:
-  - name: n8n-db
-    plan: free
-    # The free instance type is limited to 1 GB of disk
-    # space.
-    #
-    # If you later upgrade to a paid instance type, you can
-    # increase the disk size to any multiple of 5 GB by
-    # setting the `diskSizeGB` property.
-    #
-    # diskSizeGB: 5
+      # Defina a URL base do seu editor para que os webhooks funcionem corretamente.
+      # Substitua o nome do serviço pelo nome que você escolheu no Render.
+      - key: N8N_EDITOR_BASE_URL
+        value: "https://nome-do-seu-servico.onrender.com/"

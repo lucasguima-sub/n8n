@@ -35,21 +35,24 @@ services:
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
-        value: "postgres"
+        value: "postgres"  # Substitua pelo nome do seu banco se diferente
       - key: DB_POSTGRESDB_HOST
-        value: "db.akqjvytmeqfhuirfzppq.supabase.co"
+        value: "db.akqjvytmeqfhuirfzppq.supabase.co"  # Substitua pelo seu host do Supabase
       - key: DB_POSTGRESDB_PASSWORD
-        value: "Q4rLq2cUf#S5gu#"
+        value: "Q4rLq2cUf#S5gu#"  # Substitua pela sua senha
       - key: DB_POSTGRESDB_USER
-        value: "postgres"
-      # Opcional: Para SSL/TLS, se necessário pelo Supabase
-      # - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
-      #   value: "false"
+        value: "postgres"  # Geralmente é 'postgres' no Supabase
+      - key: DB_POSTGRESDB_PORT
+        value: "5432"
+      # Configurações SSL para Supabase
+      - key: DB_POSTGRESDB_SSL
+        value: "true"
+      - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
+        value: "false"  # Temporário para resolver problemas de certificado
 
 # A seção 'databases' é removida, pois você usará um banco de dados externo (Supabase).
 # databases:
 #   - name: n8n-db
 #     plan: free
 #     diskSizeGB: 5
-
 

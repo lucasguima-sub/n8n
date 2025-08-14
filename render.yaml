@@ -40,4 +40,4 @@ services:
       # Defina a URL base do seu editor para que os webhooks funcionem corretamente.
       # Substitua 'n8n-service' pelo nome que você escolheu para o serviço no Render.
       - key: N8N_EDITOR_BASE_URL
-        value: "https://n8n-service.onrender.com/"
+        value: "https://n8n-service-hy3a.onrender.com"

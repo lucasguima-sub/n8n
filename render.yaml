@@ -1,58 +1,20 @@
-# Use this Blueprint to deploy n8n on Render as a web
-# service that uses a Postgres database to store
-# workflow data.
-#
-# This Blueprint uses free instance types (specified by
-# `plan`) for both the web service and the database. You
-# can upgrade to paid instance types at any time to
-# increase resources.
-
 services:
   - type: web
     plan: free
-    # This is the runtime for services that pull a prebuilt Docker image
     runtime: image
-    # You can give the service any name
     name: n8n-service
     image:
-      # Pulls the n8n image tagged as latest from Docker Hub
       url: docker.io/n8nio/n8n:latest
 
-    # All environment variables defined below are required!
-    #
-    # You can define additional environment variables as needed.
     envVars:
-      # Generates a base64-encoded key for
-      # encrypting credentials in n8n
-      #
-      # Do not modify this value after it's generated!
-      # If you do, you'll lose access to all credentials
-      # encrypted with the previous value.
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # Configurações para conectar ao banco de dados PostgreSQL do Supabase
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: "true"
+
+      # Use Supavisor Session Pooler (IPv4 compatível)
       - key: DB_TYPE
         value: postgresdb
-      - key: DB_POSTGRESDB_DATABASE
-        value: "postgres"  # Substitua pelo nome do seu banco se diferente
-      - key: DB_POSTGRESDB_HOST
-        value: "db.akqjvytmeqfhuirfzppq.supabase.co"  # Substitua pelo seu host do Supabase
-      - key: DB_POSTGRESDB_PASSWORD
-        value: "Q4rLq2cUf#S5gu#"  # Substitua pela sua senha
-      - key: DB_POSTGRESDB_USER
-        value: "postgres"  # Geralmente é 'postgres' no Supabase
-      - key: DB_POSTGRESDB_PORT
-        value: "5432"
-      # Configurações SSL para Supabase
-      - key: DB_POSTGRESDB_SSL
-        value: "true"
-      - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
-        value: "false"  # Temporário para resolver problemas de certificado
-
-# A seção 'databases' é removida, pois você usará um banco de dados externo (Supabase).
-# databases:
-#   - name: n8n-db
-#     plan: free
-#     diskSizeGB: 5
-
+      - key: DB_POSTGRESDB_CONNECTION_STRING
+        value: "postgresql://postgres.akqjvytmeqfhuirfzppq:[YOUR-PASSWORD]@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"

@@ -11,16 +11,40 @@ services:
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # Configuração do banco (Supabase)
+      # Ajuste de permissões recomendadas pelo n8n
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: "true"
+
+      # Configuração principal do banco (Supabase)
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
         value: postgres
       - key: DB_POSTGRESDB_HOST
         value: db.akqjvytmeqfhuirfzppq.supabase.co
-      - key: DB_POSTGRESDB_PASSWORD
-        sync: false   # Valor será configurado manualmente no painel do Render
-      - key: DB_POSTGRESDB_USER
-        value: postgres
       - key: DB_POSTGRESDB_PORT
         value: "5432"
+      - key: DB_POSTGRESDB_USER
+        value: postgres
+      - key: DB_POSTGRESDB_PASSWORD
+        sync: false   # Valor seguro configurado no painel do Render
+
+      # Forçar uso de SSL e compatibilidade com Supabase
+      - key: DB_POSTGRESDB_SSL
+        value: "true"
+      - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
+        value: "false"
+
+      # Variáveis extras para garantir conexão IPv4/SSL
+      - key: PGSSLMODE
+        value: require
+      - key: PGHOST
+        value: db.akqjvytmeqfhuirfzppq.supabase.co
+      - key: PGPORT
+        value: "5432"
+      - key: PGUSER
+        value: postgres
+      - key: PGPASSWORD
+        sync: false   # Valor seguro configurado no painel do Render
+      - key: PGDATABASE
+        value: postgres

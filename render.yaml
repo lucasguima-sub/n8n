@@ -1,3 +1,6 @@
+# Blueprint atualizado para usar variáveis de ambiente granulares.
+# Esta configuração é mais robusta para conexão com o Supabase.
+
 services:
   - type: web
     plan: free
@@ -7,14 +10,34 @@ services:
       url: docker.io/n8nio/n8n:latest
 
     envVars:
-      - key: N8N_ENCRYPTION_KEY
-        generateValue: true
-
+      # Variável para corrigir o aviso de permissões.
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
         value: "true"
 
-    
+      # Sua chave de criptografia do n8n. Use uma chave forte.
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+
+      # Variáveis de ambiente para conectar o n8n ao seu banco de dados PostgreSQL no Supabase.
+      # Substitua os valores entre aspas pelas suas credenciais reais do Supabase.
+      # Esta é a abordagem mais confiável para configurar o banco de dados no n8n.
       - key: DB_TYPE
         value: postgresdb
-      - key: DB_POSTGRESDB_CONNECTION_STRING
-        value: "postgresql://postgres.akqjvytmeqfhuirfzppq:[DB_PASSWORD]@aws-1-sa-east-1.pooler.supabase.com:6543/postgres"
+      - key: DB_POSTGRESDB_DATABASE
+        value: "postgres"
+      - key: DB_POSTGRESDB_HOST
+        value: "db.akqjvytmeqfhuirfzppq.supabase.co"
+      - key: DB_POSTGRESDB_PASSWORD
+        sync: false # O valor da senha será definido no painel do Render.
+      - key: DB_POSTGRESDB_USER
+        value: "postgres"
+      - key: DB_POSTGRESDB_PORT
+        value: "5432"
+      # Esta variável é fundamental para que o n8n se conecte ao Supabase via SSL.
+      - key: DB_POSTGRESDB_SSL_MODE
+        value: "require"
+
+      # Defina a URL base do seu editor para que os webhooks funcionem corretamente.
+      # Substitua 'n8n-service' pelo nome que você escolheu para o serviço no Render.
+      - key: N8N_EDITOR_BASE_URL
+        value: "https://n8n-service.onrender.com/"

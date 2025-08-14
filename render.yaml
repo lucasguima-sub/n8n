@@ -1,30 +1,20 @@
-# Use este Blueprint para implantar o n8n no Render como um serviço web
-# que usa um banco de dados Postgres externo (Supabase) para armazenar
-# dados de workflow.
+# Blueprint atualizado para implantar o n8n no Render.
+# Esta versão inclui correções para a conexão com o Supabase e permissões de arquivo.
 
 services:
   - type: web
     plan: free
-    # Este é o tempo de execução para serviços que puxam uma imagem Docker pré-construída
     runtime: image
-    # Você pode dar qualquer nome ao serviço
     name: n8n-service
     image:
-      # Puxa a imagem do n8n com a tag 'latest' do Docker Hub
       url: docker.io/n8nio/n8n:latest
 
-    # Todas as variáveis de ambiente abaixo são necessárias!
-    #
-    # Você pode definir variáveis de ambiente adicionais conforme necessário.
     envVars:
-      # Gera uma chave codificada em base64 para
-      # criptografar credenciais no n8n.
-      #
-      # Use `generateValue: true` no Render ou forneça sua própria chave
-      # forte (como uma string aleatória com mais de 32 caracteres).
-      # Se você usar `generateValue: true`, o Render irá gerar uma para você.
-      # Exemplo: - key: N8N_ENCRYPTION_KEY
-      #          value: sua-chave-de-criptografia-aqui
+      # Variável para corrigir o aviso de permissões.
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: "true"
+
+      # Sua chave de criptografia do n8n. Use uma chave forte.
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
@@ -42,8 +32,10 @@ services:
         value: "postgres" # Geralmente é 'postgres'
       - key: DB_POSTGRESDB_PORT
         value: "5432"
+      # Esta variável é fundamental para que o n8n se conecte ao Supabase via SSL.
+      - key: DB_POSTGRESDB_SSL_MODE
+        value: "require"
 
       # Defina a URL base do seu editor para que os webhooks funcionem corretamente.
-      # Substitua o nome do serviço pelo nome que você escolheu no Render.
       - key: N8N_EDITOR_BASE_URL
         value: "https://nome-do-seu-servico.onrender.com/"

@@ -7,44 +7,14 @@ services:
       url: docker.io/n8nio/n8n:latest
 
     envVars:
-      # Chave de criptografia do n8n (não altere depois de gerar)
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # Ajuste de permissões recomendadas pelo n8n
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
         value: "true"
 
-      # Configuração principal do banco (Supabase)
+      # Use Supavisor Session Pooler (IPv4 compatível)
       - key: DB_TYPE
         value: postgresdb
-      - key: DB_POSTGRESDB_DATABASE
-        value: postgres
-      - key: DB_POSTGRESDB_HOST
-        value: db.akqjvytmeqfhuirfzppq.supabase.co
-      - key: DB_POSTGRESDB_PORT
-        value: "5432"
-      - key: DB_POSTGRESDB_USER
-        value: postgres
-      - key: DB_POSTGRESDB_PASSWORD
-        sync: false   # Valor seguro configurado no painel do Render
-
-      # Forçar uso de SSL e compatibilidade com Supabase
-      - key: DB_POSTGRESDB_SSL
-        value: "true"
-      - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
-        value: "false"
-
-      # Variáveis extras para garantir conexão IPv4/SSL
-      - key: PGSSLMODE
-        value: require
-      - key: PGHOST
-        value: db.akqjvytmeqfhuirfzppq.supabase.co
-      - key: PGPORT
-        value: "5432"
-      - key: PGUSER
-        value: postgres
-      - key: PGPASSWORD
-        sync: false   # Valor seguro configurado no painel do Render
-      - key: PGDATABASE
-        value: postgres
+      - key: DB_POSTGRESDB_CONNECTION_STRING
+        value: "postgresql://postgres.akqjvytmeqfhuirfzppq:[DB_PASSWORD]@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
